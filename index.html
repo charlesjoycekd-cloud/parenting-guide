@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Little Roots Parenting Guide</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #FFF8F0; }
+    button { cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+
+    const strategies = {
+      behavior: {
+        toddler: [
+          {
+            title: "Offer Two Choices", icon: "✌️",
+            when: "When they refuse a task",
+            how: "Instead of 'Put on your shoes,' say 'Do you want the red shoes or blue shoes?' This gives control within your boundaries.",
+            tip: "Both choices must be options you're okay with!",
+            color: "#FF6B6B",
+          },
+          {
+            title: "Narrate, Don't Command", icon: "🗣️",
+            when: "Before a transition (leaving the park, bedtime)",
+            how: "Give a 5-minute warning: 'We're leaving the park in 5 minutes.' Then 2 minutes. Then go. Predictability reduces meltdowns.",
+            tip: "Use a visual timer if possible — kids can't read clocks but can see time running out.",
+            color: "#4ECDC4",
+          },
+          {
+            title: "Catch Them Being Good", icon: "⭐",
+            when: "Any moment of positive behavior",
+            how: "Immediately and specifically praise: 'I love how you shared your toy with your sister just now!' Specific praise is 3x more effective than generic praise.",
+            tip: "Aim for 5 positive comments for every 1 correction.",
+            color: "#FFD93D",
+          },
+          {
+            title: "Natural Consequences", icon: "🍂",
+            when: "Low-stakes situations",
+            how: "If they won't wear a jacket, let them feel cold briefly (safely). Experience teaches better than lectures.",
+            tip: "Only use when consequences are safe and immediate.",
+            color: "#A8E6CF",
+          },
+        ],
+        preschool: [
+          {
+            title: "Problem-Solving Together", icon: "🧩",
+            when: "After a conflict or misbehavior has passed",
+            how: "Sit down calmly and ask: 'What happened? How did that make you feel? What could we do differently next time?' Guide — don't lecture.",
+            tip: "Wait until everyone is calm. Never problem-solve mid-meltdown.",
+            color: "#C3A6FF",
+          },
+          {
+            title: "Visual Rules Chart", icon: "📋",
+            when: "Setting household expectations",
+            how: "Co-create 3–5 family rules using pictures and words. Place them at eye level. Refer to the chart instead of repeating yourself.",
+            tip: "Let your child help draw or decorate the chart — ownership increases buy-in.",
+            color: "#FF6B6B",
+          },
+          {
+            title: "When-Then Language", icon: "🔄",
+            when: "Resistance to tasks",
+            how: "'When you put your toys away, THEN we can read a story.' This frames expectations positively without threats.",
+            tip: "Avoid 'If you don't... then I will...' — it escalates power struggles.",
+            color: "#4ECDC4",
+          },
+          {
+            title: "Logical Consequences", icon: "⚖️",
+            when: "Rule-breaking",
+            how: "Consequences should be Related, Respectful, and Reasonable. Threw food? Help clean it up. Broke a toy in anger? No new toy for a week.",
+            tip: "Say it once, calmly. Follow through consistently.",
+            color: "#FFD93D",
+          },
+        ],
+      },
+      emotional: {
+        toddler: [
+          {
+            title: "Name the Feeling", icon: "🎭",
+            when: "During any emotional moment",
+            how: "Get on their level, make eye contact and say 'You're feeling really frustrated right now.' Labeling emotions activates the thinking brain.",
+            tip: "Don't say 'calm down' — it dismisses. Say 'I'm right here with you.'",
+            color: "#FF6B6B",
+          },
+          {
+            title: "The Big Hug Reset", icon: "🤗",
+            when: "After a tantrum winds down",
+            how: "Offer physical comfort without words first. A 20-second hug releases oxytocin and signals safety. Then gently talk.",
+            tip: "Your calm IS the co-regulation. Your nervous system regulates theirs.",
+            color: "#C3A6FF",
+          },
+          {
+            title: "Feelings Books Routine", icon: "📚",
+            when: "Bedtime or quiet time",
+            how: "Read books with emotional themes (The Invisible String, Grumpy Monkey). Discuss characters' feelings — it's safer than talking about their own.",
+            tip: "Ask 'How do you think the character felt?' not 'How did YOU feel today?'",
+            color: "#A8E6CF",
+          },
+          {
+            title: "Special One-on-One Time", icon: "💛",
+            when: "Daily, even just 10–15 minutes",
+            how: "Child-led play where YOU follow THEIR lead. No phones, no agenda, no teaching. Just presence. This fills their emotional tank.",
+            tip: "Call it 'Special Time' — kids will look forward to it by name.",
+            color: "#FFD93D",
+          },
+        ],
+        preschool: [
+          {
+            title: "Emotion Wheel Check-In", icon: "🌈",
+            when: "Morning or after school",
+            how: "Use a printed emotion wheel. Ask 'Can you point to how you feel today?' This builds emotional vocabulary beyond happy/sad/mad.",
+            tip: "Share your own feelings too: 'I'm feeling a little tired but mostly happy today.'",
+            color: "#4ECDC4",
+          },
+          {
+            title: "The Calm-Down Corner", icon: "🏡",
+            when: "When emotions run high",
+            how: "Co-create a cozy corner with sensory tools (stress ball, pinwheel, picture books, soft toy). Teach it during CALM times, not as punishment.",
+            tip: "Say 'Would you like to visit our calm corner?' Not 'Go to your corner!'",
+            color: "#FF6B6B",
+          },
+          {
+            title: "Feelings Journal", icon: "✏️",
+            when: "End of day",
+            how: "Let them draw or dictate 'What made me happy today / What was hard today.' Creates a safe outlet and builds reflection habits.",
+            tip: "Never correct or judge what they share. Just listen and say 'Thank you for telling me.'",
+            color: "#FFD93D",
+          },
+          {
+            title: "Repair After Rupture", icon: "🌱",
+            when: "After YOU lose your temper",
+            how: "Model repair: 'I lost my patience earlier and yelled. That wasn't okay. I'm sorry.' This teaches emotional accountability powerfully.",
+            tip: "Rupture + repair is normal and healthy. Perfect parenting doesn't exist.",
+            color: "#C3A6FF",
+          },
+        ],
+      },
+    };
+
+    const checklist = [
+      { id: 1, text: "Give 2 choices instead of commands", category: "behavior" },
+      { id: 2, text: "5-minute transition warnings", category: "behavior" },
+      { id: 3, text: "5 positives for every 1 correction", category: "behavior" },
+      { id: 4, text: "10–15 min daily one-on-one time", category: "emotional" },
+      { id: 5, text: "Name emotions out loud", category: "emotional" },
+      { id: 6, text: "Get on their eye level when talking", category: "emotional" },
+      { id: 7, text: "Stay calm before responding to behavior", category: "both" },
+      { id: 8, text: "Follow through consistently", category: "behavior" },
+      { id: 9, text: "Read together daily", category: "emotional" },
+      { id: 10, text: "Repair after any rupture", category: "emotional" },
+    ];
+
+    function App() {
+      const [activeTab, setActiveTab] = useState("behavior");
+      const [activeAge, setActiveAge] = useState("toddler");
+      const [checked, setChecked] = useState({});
+      const [activeCard, setActiveCard] = useState(null);
+      const [view, setView] = useState("strategies");
+
+      const toggleCheck = (id) => setChecked((prev) => ({ ...prev, [id]: !prev[id] }));
+      const checkedCount = Object.values(checked).filter(Boolean).length;
+      const currentStrategies = strategies[activeTab][activeAge];
+
+      return (
+        <div style={{
+          fontFamily: "'Georgia', 'Times New Roman', serif",
+          background: "linear-gradient(135deg, #FFF8F0 0%, #FFF0E6 50%, #FEE8D6 100%)",
+          minHeight: "100vh", color: "#2D2012",
+        }}>
+          {/* Header */}
+          <div style={{
+            background: "linear-gradient(135deg, #FF6B35 0%, #F7931E 50%, #FFB347 100%)",
+            padding: "32px 24px 28px", textAlign: "center", position: "relative", overflow: "hidden",
+          }}>
+            <div style={{ position: "absolute", top: -20, left: -20, width: 120, height: 120, borderRadius: "50%", background: "rgba(255,255,255,0.1)" }} />
+            <div style={{ position: "absolute", bottom: -30, right: -10, width: 160, height: 160, borderRadius: "50%", background: "rgba(255,255,255,0.08)" }} />
+            <div style={{ fontSize: 40, marginBottom: 6 }}>🌱</div>
+            <h1 style={{ margin: 0, fontSize: 28, fontWeight: "bold", color: "#fff", letterSpacing: "-0.5px", textShadow: "0 2px 8px rgba(0,0,0,0.15)" }}>
+              Little Roots Parenting Guide
+            </h1>
+            <p style={{ margin: "8px 0 0", color: "rgba(255,255,255,0.9)", fontSize: 15, fontStyle: "italic" }}>
+              Toddlers &amp; Preschoolers · Behavior &amp; Emotional Connection
+            </p>
+          </div>
+
+          <div style={{ maxWidth: 680, margin: "0 auto", padding: "0 16px 40px" }}>
+
+            {/* View Toggle */}
+            <div style={{ display: "flex", gap: 8, margin: "20px 0 0", background: "#fff", borderRadius: 40, padding: 4, boxShadow: "0 2px 12px rgba(255,107,53,0.12)" }}>
+              {["strategies", "checklist"].map(v => (
+                <button key={v} onClick={() => setView(v)} style={{
+                  flex: 1, padding: "10px 16px", border: "none", borderRadius: 36,
+                  background: view === v ? "linear-gradient(135deg, #FF6B35, #F7931E)" : "transparent",
+                  color: view === v ? "#fff" : "#8B6F5E",
+                  fontFamily: "Georgia, serif", fontSize: 14, fontWeight: view === v ? "bold" : "normal",
+                  transition: "all 0.2s",
+                }}>
+                  {v === "strategies" ? "🎯 Strategies" : "✅ Daily Checklist"}
+                </button>
+              ))}
+            </div>
+
+            {view === "strategies" && <>
+              {/* Age Tabs */}
+              <div style={{ display: "flex", gap: 10, margin: "20px 0 14px" }}>
+                {[["toddler", "👶 Toddler (1–3)"], ["preschool", "🎨 Preschool (4–5)"]].map(([key, label]) => (
+                  <button key={key} onClick={() => { setActiveAge(key); setActiveCard(null); }} style={{
+                    flex: 1, padding: "10px 12px",
+                    border: `2px solid ${activeAge === key ? "#FF6B35" : "#E8D5C4"}`,
+                    borderRadius: 12, background: activeAge === key ? "#FFF3EE" : "#fff",
+                    color: activeAge === key ? "#FF6B35" : "#8B6F5E",
+                    fontFamily: "Georgia, serif", fontSize: 14, fontWeight: "bold", transition: "all 0.2s",
+                  }}>{label}</button>
+                ))}
+              </div>
+
+              {/* Category Tabs */}
+              <div style={{ display: "flex", gap: 10, marginBottom: 20 }}>
+                {[["behavior", "🧭 Behavior & Discipline"], ["emotional", "💛 Emotional Connection"]].map(([key, label]) => (
+                  <button key={key} onClick={() => { setActiveTab(key); setActiveCard(null); }} style={{
+                    flex: 1, padding: "9px 10px", border: "none", borderRadius: 10,
+                    background: activeTab === key ? (key === "behavior" ? "#FF6B35" : "#C3A6FF") : "#F5EDE6",
+                    color: activeTab === key ? "#fff" : "#8B6F5E",
+                    fontFamily: "Georgia, serif", fontSize: 13, fontWeight: "bold", transition: "all 0.2s",
+                  }}>{label}</button>
+                ))}
+              </div>
+
+              {/* Strategy Cards */}
+              <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+                {currentStrategies.map((s, i) => (
+                  <div key={i} onClick={() => setActiveCard(activeCard === i ? null : i)} style={{
+                    background: "#fff", borderRadius: 16, padding: "18px 20px", cursor: "pointer",
+                    border: `2px solid ${activeCard === i ? s.color : "transparent"}`,
+                    boxShadow: activeCard === i ? `0 4px 20px ${s.color}30` : "0 2px 10px rgba(0,0,0,0.06)",
+                    transition: "all 0.25s",
+                  }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                      <div style={{
+                        width: 48, height: 48, borderRadius: 14, background: `${s.color}20`,
+                        display: "flex", alignItems: "center", justifyContent: "center", fontSize: 24, flexShrink: 0,
+                      }}>{s.icon}</div>
+                      <div style={{ flex: 1 }}>
+                        <div style={{ fontWeight: "bold", fontSize: 16, color: "#2D2012" }}>{s.title}</div>
+                        <div style={{ fontSize: 12, color: "#A08878", marginTop: 2 }}>📍 {s.when}</div>
+                      </div>
+                      <div style={{ fontSize: 18, color: s.color, transform: activeCard === i ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s" }}>⌄</div>
+                    </div>
+                    {activeCard === i && (
+                      <div style={{ marginTop: 16, paddingTop: 16, borderTop: `1px solid ${s.color}30` }}>
+                        <div style={{ fontSize: 14, lineHeight: 1.7, color: "#4A3728", marginBottom: 12 }}>
+                          <strong style={{ color: "#2D2012" }}>How to do it:</strong><br />{s.how}
+                        </div>
+                        <div style={{
+                          background: `${s.color}15`, borderLeft: `3px solid ${s.color}`,
+                          borderRadius: "0 10px 10px 0", padding: "10px 14px", fontSize: 13, color: "#4A3728", lineHeight: 1.6,
+                        }}>
+                          💡 <strong>Pro tip:</strong> {s.tip}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              <div style={{ marginTop: 20, padding: "14px 18px", background: "#FFF3EE", borderRadius: 12, fontSize: 13, color: "#8B6F5E", textAlign: "center", fontStyle: "italic" }}>
+                Tap any card to expand the full strategy ↑
+              </div>
+            </>}
+
+            {view === "checklist" && (
+              <div style={{ marginTop: 20 }}>
+                <div style={{
+                  background: "linear-gradient(135deg, #FF6B35, #F7931E)", borderRadius: 16, padding: "16px 20px", marginBottom: 20,
+                  display: "flex", alignItems: "center", justifyContent: "space-between",
+                }}>
+                  <div>
+                    <div style={{ color: "#fff", fontWeight: "bold", fontSize: 16 }}>Today's Parenting Wins</div>
+                    <div style={{ color: "rgba(255,255,255,0.85)", fontSize: 13 }}>Small habits, big impact</div>
+                  </div>
+                  <div style={{ background: "rgba(255,255,255,0.25)", borderRadius: 40, padding: "8px 16px", color: "#fff", fontWeight: "bold", fontSize: 18 }}>
+                    {checkedCount}/{checklist.length}
+                  </div>
+                </div>
+
+                <div style={{ background: "#F5EDE6", borderRadius: 40, height: 8, marginBottom: 20, overflow: "hidden" }}>
+                  <div style={{
+                    height: "100%", borderRadius: 40,
+                    background: "linear-gradient(90deg, #FF6B35, #FFB347)",
+                    width: `${(checkedCount / checklist.length) * 100}%`,
+                    transition: "width 0.4s ease",
+                  }} />
+                </div>
+
+                {[
+                  ["behavior", "🧭 Behavior & Discipline", "#FF6B35"],
+                  ["emotional", "💛 Emotional Connection", "#C3A6FF"],
+                  ["both", "🌟 Universal Practices", "#4ECDC4"],
+                ].map(([cat, label, color]) => (
+                  <div key={cat} style={{ marginBottom: 20 }}>
+                    <div style={{ fontSize: 13, fontWeight: "bold", color, textTransform: "uppercase", letterSpacing: 1, marginBottom: 10 }}>{label}</div>
+                    {checklist.filter(c => c.category === cat).map(item => (
+                      <div key={item.id} onClick={() => toggleCheck(item.id)} style={{
+                        display: "flex", alignItems: "center", gap: 14,
+                        background: checked[item.id] ? `${color}12` : "#fff",
+                        border: `1.5px solid ${checked[item.id] ? color : "#EDE0D4"}`,
+                        borderRadius: 12, padding: "13px 16px", marginBottom: 8, cursor: "pointer", transition: "all 0.2s",
+                      }}>
+                        <div style={{
+                          width: 24, height: 24, borderRadius: 8,
+                          border: `2px solid ${checked[item.id] ? color : "#C4A898"}`,
+                          background: checked[item.id] ? color : "transparent",
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                          flexShrink: 0, transition: "all 0.2s", fontSize: 14, color: "#fff",
+                        }}>
+                          {checked[item.id] && "✓"}
+                        </div>
+                        <span style={{
+                          fontSize: 14, color: checked[item.id] ? "#8B6F5E" : "#2D2012",
+                          textDecoration: checked[item.id] ? "line-through" : "none", transition: "all 0.2s",
+                        }}>{item.text}</span>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+
+                {checkedCount === checklist.length && (
+                  <div style={{ background: "linear-gradient(135deg, #A8E6CF, #4ECDC4)", borderRadius: 16, padding: "20px", textAlign: "center", marginTop: 8 }}>
+                    <div style={{ fontSize: 32 }}>🎉</div>
+                    <div style={{ color: "#fff", fontWeight: "bold", fontSize: 17, marginTop: 6 }}>You showed up fully today!</div>
+                    <div style={{ color: "rgba(255,255,255,0.9)", fontSize: 13, marginTop: 4 }}>Your children are lucky to have a parent who cares this much.</div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            <div style={{
+              marginTop: 28, padding: "16px 20px", background: "rgba(255,255,255,0.7)",
+              borderRadius: 14, fontSize: 13, color: "#8B6F5E", lineHeight: 1.6,
+              textAlign: "center", fontStyle: "italic", border: "1px solid #EDE0D4",
+            }}>
+              🌿 Remember: <strong>connection before correction.</strong> A warm relationship is the foundation everything else is built on.
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
+</body>
+</html>
